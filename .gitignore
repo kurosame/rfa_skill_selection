@@ -1,0 +1,11 @@
+.dart_tool
+.idea
+build
+rfa_skill_selection.iml
+
+# Not currently supported
+android
+ios
+linux
+macos
+windows
