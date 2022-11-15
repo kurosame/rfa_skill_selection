@@ -1,115 +1,183 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const App());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RFA',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Home(title: 'Ring Fit Adventure Skill Selection'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class Home extends StatefulWidget {
   final String title;
 
+  const Home({super.key, required this.title});
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+enum SkillType { arm, abs, leg, yoga }
 
-  void _incrementCounter() {
+class Skill {
+  final SkillType type;
+  final String name;
+  final int range;
+  bool isCheck = false;
+
+  Skill({required this.type, required this.name, required this.range});
+}
+
+List<Skill> skillsAll = [
+  Skill(type: SkillType.arm, name: 'バンザイプッシュ', range: 1),
+  Skill(type: SkillType.arm, name: 'ウシロプッシュ', range: 1),
+  Skill(type: SkillType.arm, name: 'アームツイスト', range: 1),
+  Skill(type: SkillType.arm, name: 'サゲテプッシュ', range: 3),
+  Skill(type: SkillType.arm, name: 'トライセプス', range: 3),
+  Skill(type: SkillType.arm, name: 'リングアロー', range: 5),
+  Skill(type: SkillType.arm, name: 'グルグルアーム', range: 5),
+  Skill(type: SkillType.arm, name: 'カタニプッシュ', range: 0),
+  Skill(type: SkillType.abs, name: 'ニートゥーチェスト', range: 1),
+  Skill(type: SkillType.abs, name: 'バンザイモーニング', range: 1),
+  Skill(type: SkillType.abs, name: 'バンザイツイスト', range: 1),
+  Skill(type: SkillType.abs, name: 'レッグレイズ', range: 1),
+  Skill(type: SkillType.abs, name: 'バタバタレッグ', range: 1),
+  Skill(type: SkillType.abs, name: 'リングアゲサゲ', range: 1),
+  Skill(type: SkillType.abs, name: 'プランク', range: 3),
+  Skill(type: SkillType.abs, name: 'ベントオーバー', range: 3),
+  Skill(type: SkillType.abs, name: 'ハサミレッグ', range: 3),
+  Skill(type: SkillType.abs, name: 'スワイショウ', range: 5),
+  Skill(type: SkillType.abs, name: 'バンザイコシフリ', range: 5),
+  Skill(type: SkillType.abs, name: 'ロシアンツイスト', range: 5),
+  Skill(type: SkillType.abs, name: 'アシパカパカ', range: 0),
+  Skill(type: SkillType.abs, name: 'マエニプッシュ', range: 0),
+  Skill(type: SkillType.abs, name: 'バンザイサイドベンド', range: 0),
+  Skill(type: SkillType.leg, name: 'スクワット', range: 1),
+  Skill(type: SkillType.leg, name: 'モモアゲアゲ', range: 1),
+  Skill(type: SkillType.leg, name: 'モモデプッシュ', range: 1),
+  Skill(type: SkillType.leg, name: 'アゲサゲコンボ', range: 1),
+  Skill(type: SkillType.leg, name: 'ワイドスクワット', range: 3),
+  Skill(type: SkillType.leg, name: 'ステップアップ', range: 3),
+  Skill(type: SkillType.leg, name: 'モモアゲコンボ', range: 3),
+  Skill(type: SkillType.leg, name: 'バンザイスクワット', range: 5),
+  Skill(type: SkillType.leg, name: 'マウンテンクライマー', range: 5),
+  Skill(type: SkillType.leg, name: 'ヒップリフト', range: 0),
+  Skill(type: SkillType.yoga, name: '椅子のポーズ', range: 1),
+  Skill(type: SkillType.yoga, name: '英雄１のポーズ', range: 1),
+  Skill(type: SkillType.yoga, name: 'ねじり体側のポーズ', range: 1),
+  Skill(type: SkillType.yoga, name: '立木のポーズ', range: 1),
+  Skill(type: SkillType.yoga, name: '英雄３のポーズ', range: 3),
+  Skill(type: SkillType.yoga, name: 'チョウツガイのポーズ', range: 3),
+  Skill(type: SkillType.yoga, name: '英雄２のポーズ', range: 5),
+  Skill(type: SkillType.yoga, name: '舟のポーズ', range: 5),
+  Skill(type: SkillType.yoga, name: '扇のポーズ', range: 0),
+  Skill(type: SkillType.yoga, name: '折りたたむポーズ', range: 0),
+];
+
+class _HomeState extends State<Home> {
+  List<Skill> _skills = [];
+
+  _HomeState() {
+    Skill getSkill(List<Skill> l) => l[Random().nextInt(l.length)];
+
+    final ranges = [5, 5, 5, 3, 3, 1, 1, 1];
+    ranges.shuffle();
+
+    final armList = skillsAll.where((s) => s.type == SkillType.arm).toList();
+    final arm1 = getSkill(armList.where((s) => s.range == ranges[0]).toList());
+    final arm2 = getSkill(armList
+        .where((s) => s.range == ranges[1] && s.name != arm1.name)
+        .toList());
+
+    final absList = skillsAll.where((s) => s.type == SkillType.abs).toList();
+    final abs1 = getSkill(absList.where((s) => s.range == ranges[2]).toList());
+    final abs2 = getSkill(absList
+        .where((s) => s.range == ranges[3] && s.name != abs1.name)
+        .toList());
+
+    final legList = skillsAll.where((s) => s.type == SkillType.leg).toList();
+    final leg1 = getSkill(legList.where((s) => s.range == ranges[4]).toList());
+    final leg2 = getSkill(legList
+        .where((s) => s.range == ranges[5] && s.name != leg1.name)
+        .toList());
+
+    final yogaList = skillsAll.where((s) => s.type == SkillType.yoga).toList();
+    final yoga1 =
+        getSkill(yogaList.where((s) => s.range == ranges[6]).toList());
+    final yoga2 = getSkill(yogaList
+        .where((s) => s.range == ranges[7] && s.name != yoga1.name)
+        .toList());
+
+    final healList = skillsAll.where((s) => s.range == 0).toList();
+    final heal1 = getSkill(healList);
+    final heal2 =
+        getSkill(healList.where((s) => s.name != heal1.name).toList());
+
+    _skills = [arm1, arm2, abs1, abs2, leg1, leg2, yoga1, yoga2, heal1, heal2];
+  }
+
+  void _handleCheck(int i) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _skills[i].isCheck = !_skills[i].isCheck;
     });
+  }
+
+  MaterialColor _getTileColor(SkillType t) {
+    switch (t) {
+      case SkillType.arm:
+        return Colors.red;
+      case SkillType.abs:
+        return Colors.amber;
+      case SkillType.leg:
+        return Colors.deepPurple;
+      case SkillType.yoga:
+        return Colors.teal;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          children: _skills
+              .asMap()
+              .entries
+              .map((e) => CheckboxListTile(
+                    value: e.value.isCheck,
+                    activeColor: Colors.blue,
+                    tileColor: e.value.range == 0
+                        ? Colors.pink
+                        : _getTileColor(e.value.type),
+                    title: Text(
+                      e.value.name,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      e.value.range == 0 ? "回復" : '攻撃範囲${e.value.range}',
+                      style: const TextStyle(color: Colors.white60),
+                    ),
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    onChanged: (bool? _) {
+                      _handleCheck(e.key);
+                    },
+                  ))
+              .toList(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
