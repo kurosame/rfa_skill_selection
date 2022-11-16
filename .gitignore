@@ -1,6 +1,7 @@
 .dart_tool
 .idea
 build
+.firebaserc
 rfa_skill_selection.iml
 
 # Not currently supported
