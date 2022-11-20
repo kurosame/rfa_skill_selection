@@ -49,7 +49,7 @@ class SkillUI implements Skill {
 class _HomeState extends State<Home> {
   List<SkillUI> _skills = [];
 
-  _HomeState() {
+  List<SkillUI> _getSkills() {
     final skillsAll = fetchSkills()
         .map((s) => SkillUI(type: s.type, name: s.name, range: s.range));
     final ranges = [5, 5, 5, 3, 3, 1, 1, 1];
@@ -88,7 +88,17 @@ class _HomeState extends State<Home> {
     final heal2 = General.getRandomItem(
         healList.where((s) => s.name != heal1.name).toList());
 
-    _skills = [arm1, arm2, abs1, abs2, leg1, leg2, yoga1, yoga2, heal1, heal2];
+    return [arm1, arm2, abs1, abs2, leg1, leg2, yoga1, yoga2, heal1, heal2];
+  }
+
+  _HomeState() {
+    _skills = _getSkills();
+  }
+
+  Future<void> _onRefresh() async {
+    setState(() {
+      _skills = _getSkills();
+    });
   }
 
   void _handleCheck(int i) {
@@ -114,7 +124,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: Center(
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
         child: SingleChildScrollView(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
