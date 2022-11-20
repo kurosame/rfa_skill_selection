@@ -115,7 +115,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: Center(
-        child: Column(
+        child: SingleChildScrollView(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: _skills
               .asMap()
@@ -140,7 +141,7 @@ class _HomeState extends State<Home> {
                     },
                   ))
               .toList(),
-        ),
+        )),
       ),
     );
   }
