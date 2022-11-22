@@ -1,12 +1,10 @@
-name: Deploy to Production
+name: Check
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
-  deploy:
+  check:
+    name: Run check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,13 +14,10 @@ jobs:
           flutter-version: 3.3.8
       - name: Build
         run: flutter build web
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_RFA_SKILL_SELECTION }}"
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          projectId: "${{ secrets.FIREBASE_PROJECT_ID_RFA_SKILL_SELECTION }}"
-          channelId: live
+      - name: Run lint
+        run: flutter analyze
+      - name: Run test
+        run: flutter test
       - name: Slack Notification
         if: failure()
         uses: rtCamp/action-slack-notify@v2
